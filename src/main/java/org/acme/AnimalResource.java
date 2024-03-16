@@ -11,9 +11,9 @@ import io.smallrye.mutiny.Multi;
 
 @ApplicationScoped
 @Path("/answer")
-public class QuotesResource {
+public class AnimalResource {
 
-    @Channel("requests") Emitter<String> quoteRequestEmitter;
+    @Channel("requests") Emitter<String> requestEmitter;
 
     @Channel("answers") Multi<Animal> answers;
 
@@ -29,7 +29,7 @@ public class QuotesResource {
     @Produces(MediaType.TEXT_PLAIN)
     public void createRequest(String name) {
         System.out.println(name);
-        quoteRequestEmitter.send(name);
+        requestEmitter.send(name);
         System.out.println("The request has been sent");
     }
 }
