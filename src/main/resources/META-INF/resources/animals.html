@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Animals</title>
+</head>
+<body>
+<main class="container">
+    <h2 class="card-title">Animals</h2>
+    <section>
+        <input type="text" id="input_name" required size="10"/>
+        <button class="btn btn-info" id="request">Request</button>
+    </section>
+    <section class="animals">
+        <h4>Answers</h4>
+    </section>
+</main>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $("#request").click((event) => {
+        fetch("/answer/request", {
+            method: "POST",
+            body: $("#input_name").val()
+        })
+        .then(res => res.text());
+    });
+    var source = new EventSource("/answer");
+    source.onmessage = (event) => {
+      console.log("OK");
+      var json = JSON.parse(event.data);
+      var row = $(`<div> <strong style="min-width: 45px" >${json.id}</strong> | <i>${json.name}</i> </div>`);
+      $(".animals").append(row);
+    };
+</script>
+</html>
